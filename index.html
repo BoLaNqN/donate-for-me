@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💖 Donate For Me</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>💖</text></svg>">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,0.10);
+      --card-2: rgba(255,255,255,0.06);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #38bdf8;
+      --primary-2: #22c55e;
+      --border: rgba(255,255,255,0.14);
+      --shadow: 0 24px 60px rgba(0,0,0,.35);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.25), transparent 30%),
+        radial-gradient(circle at top right, rgba(34,197,94,.18), transparent 25%),
+        linear-gradient(135deg, #020617 0%, #0f172a 55%, #111827 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-card {
+      padding: 28px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: rgba(56,189,248,.16);
+      border: 1px solid rgba(56,189,248,.28);
+      color: #bae6fd;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+      margin: 0 0 20px;
+      max-width: 65ch;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .meta .item {
+      padding: 16px;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .meta .item > div {
+      flex: 1;
+    }
+
+    .meta .label {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .meta .value {
+      font-size: 16px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+
+
+    .qr-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -60px -60px auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(56,189,248,.26), transparent 70%);
+      pointer-events: none;
+    }
+
+    .qr-box {
+      width: min(100%, 360px);
+      aspect-ratio: 1;
+      padding: 18px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+      box-shadow: 0 18px 40px rgba(0,0,0,.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-box::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6), 0 0 20px rgba(56, 189, 248, 0.3);
+      animation: scanQR 2s ease-in-out infinite;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    @keyframes scanQR {
+      0% {
+        top: 0;
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.6), 0 0 20px rgba(56, 189, 248, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.8), 0 0 30px rgba(56, 189, 248, 0.5);
+      }
+      100% {
+        top: calc(100% - 3px);
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.6), 0 0 20px rgba(56, 189, 248, 0.3);
+      }
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .qr-caption {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+      max-width: 34ch;
+      display: none;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 26px;
+    }
+
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .bank-grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .bank-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 74px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      cursor: pointer;
+    }
+
+    .bank-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56,189,248,.55);
+      background: rgba(255,255,255,.12);
+    }
+
+    .bank-btn img {
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: rgba(255,255,255,.92);
+      padding: 4px;
+      flex: 0 0 auto;
+      transition: transform 1.2s ease;
+      transform-style: preserve-3d;
+    }
+
+    .bank-btn:hover img {
+      transform: rotateY(720deg);
+    }
+
+    .bank-btn .name {
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .bank-btn .sub {
+      color: #93c5fd;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .action:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    .action:active {
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      color: #082f49;
+    }
+
+    .primary:hover {
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.35);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .secondary:hover {
+      background: rgba(255,255,255,.15);
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.15);
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.22);
+      color: #dcfce7;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .helper {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .empty {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,.22);
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255,255,255,.03);
+    }
+
+    footer {
+      margin-top: 26px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    code {
+      background: rgba(255,255,255,.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: #e2e8f0;
+    }
+
+    .meta-copy-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 40px;
+      height: 40px;
+      padding: 0 12px;
+      background: linear-gradient(180deg, #162237 0%, #0b1526 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      color: #dbeafe;
+      cursor: pointer;
+      font-size: 0;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease, background .28s ease;
+      flex-shrink: 0;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 10px 18px rgba(0,0,0,.24),
+        0 0 0 rgba(56, 189, 248, 0);
+    }
+
+    .meta-copy-btn::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 13px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      z-index: -2;
+    }
+
+    .meta-copy-btn::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -120%;
+      width: 68%;
+      height: 140%;
+      transform: rotate(20deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), rgba(255,255,255,.7), rgba(255,255,255,.12), transparent);
+      opacity: 0;
+      transition: left .65s ease, opacity .2s ease;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .meta-copy-btn .copy-icon,
+    .meta-copy-btn .copy-check {
+      width: 16px;
+      height: 16px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .meta-copy-btn .copy-check {
+      position: absolute;
+      opacity: 0;
+      transform: scale(.55) rotate(-10deg);
+    }
+
+    .meta-copy-btn:hover {
+      transform: translateY(-4px);
+      border-color: rgba(125, 211, 252, 0.5);
+      background: linear-gradient(180deg, #1a2942 0%, #0d1a2e 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 16px 28px rgba(0,0,0,.34),
+        0 0 24px rgba(56, 189, 248, 0.18);
+    }
+
+    .meta-copy-btn:hover::after {
+      left: 150%;
+      opacity: 1;
+    }
+
+    .meta-copy-btn:active {
+      transform: translateY(-1px) scale(.98);
+    }
+
+    .meta-copy-btn.copied {
+      border-color: rgba(74, 222, 128, .5);
+      background: linear-gradient(180deg, #102a1d 0%, #0b1d15 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.1),
+        0 16px 28px rgba(0,0,0,.34),
+        0 0 24px rgba(74, 222, 128, .18);
+      color: #dcfce7;
+    }
+
+    .meta-copy-btn.copied .copy-icon {
+      opacity: 0;
+      transform: scale(.55) rotate(10deg);
+    }
+
+    .meta-copy-btn.copied .copy-check {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="panel hero-card">
+        <div class="badge">💖 Ủng hộ nhanh qua QR & app ngân hàng</div>
+        <h1 id="donateTitle">Ủng hộ để tiếp thêm động lực</h1>
+        <p class="lead" id="donateDescription">
+          Mọi khoản donate đều giúp mình duy trì dự án, nâng cấp dịch vụ và tạo thêm nhiều nội dung hữu ích hơn.
+          Bạn có thể quét QR hoặc bấm vào app ngân hàng bên dưới để chuyển khoản nhanh.
+        </p>
+
+        <div class="toolbar">
+          <a id="openPreferredApp" class="action primary" href="#">Mở app ngân hàng ưu tiên</a>
+        </div>
+
+        <div class="meta">
+          <div class="item">
+            <div>
+              <div class="label">Ngân hàng nhận</div>
+              <div class="value" id="bankNameText">MB Bank</div>
+            </div>
+            <button class="meta-copy-btn" data-copy="bankNameText" title="Sao chép" aria-label="Sao chép ngân hàng nhận">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="9" y="9" width="10" height="10" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 15H6.6C5.71634 15 5 14.2837 5 13.4V6.6C5 5.71634 5.71634 5 6.6 5H13.4C14.2837 5 15 5.71634 15 6.6V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <svg class="copy-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 12.5L10 16.5L18 8.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="item">
+            <div>
+              <div class="label">Số tài khoản</div>
+              <div class="value" id="accountNoText">123456789</div>
+            </div>
+            <button class="meta-copy-btn" data-copy="accountNoText" title="Sao chép" aria-label="Sao chép số tài khoản">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="9" y="9" width="10" height="10" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 15H6.6C5.71634 15 5 14.2837 5 13.4V6.6C5 5.71634 5.71634 5 6.6 5H13.4C14.2837 5 15 5.71634 15 6.6V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <svg class="copy-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 12.5L10 16.5L18 8.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="item">
+            <div>
+              <div class="label">Chủ tài khoản</div>
+              <div class="value" id="accountNameText">Nguyễn Văn A</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice">
+          Trên điện thoại, bấm nút app ngân hàng bên dưới để mở nhanh app phù hợp. Nếu máy không mở được app,
+          người dùng vẫn có thể quét mã QR để donate bình thường.
+        </div>
+      </div>
+
+      <div class="panel qr-card">
+        <div class="qr-box">
+          <img id="qrImage" alt="Mã QR thanh toán donate" />
+        </div>
+        <div class="qr-caption" id="qrCaption">
+          Quét mã QR bằng app ngân hàng hoặc ví điện tử hỗ trợ VietQR để chuyển khoản nhanh.
+        </div>
+        <div class="helper">
+          Bạn có thể thay ảnh QR riêng hoặc để trang tự tạo QR từ thông tin tài khoản.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>Chọn app ngân hàng để donate</h2>
+      <p>
+        Danh sách nút bên dưới sẽ ưu tiên theo thiết bị đang dùng. Trên điện thoại, bấm vào từng app để chuyển hướng tới luồng thanh toán phù hợp.
+      </p>
+
+      <div id="bankGrid" class="bank-grid"></div>
+      <div id="emptyState" class="empty" hidden>Không tải được danh sách app ngân hàng. Trang sẽ dùng danh sách dự phòng.</div>
+    </section>
+
+    <footer>
+      &copy; 2026 - Developer: <a href="https://www.facebook.com/QuocNin04" target="_blank" rel="noopener" style="color: var(--primary);">NqN</a>. Cảm ơn bạn đã ghé thăm và ủng hộ! 💖
+    </footer>
+  </div>
+
+  <script>
+    const CONFIG = {
+      // ====== THÔNG TIN CHÍNH ======
+      title: 'Ủng hộ để tiếp thêm động lực',
+      description: 'Mọi khoản donate đều giúp mình duy trì dự án, nâng cấp dịch vụ và tạo thêm nhiều nội dung hữu ích hơn. Bạn có thể quét QR hoặc bấm vào app ngân hàng bên dưới để chuyển khoản nhanh.',
+      qrCaption: 'Quét mã QR bằng app ngân hàng hoặc ví điện tử hỗ trợ VietQR để chuyển khoản nhanh.',
+
+      // ====== THÔNG TIN NHẬN TIỀN ======
+      bankId: 'mb',              // mã app/deeplink VietQR ưu tiên: mb, vcb, tcb, bidv, acb...
+      accountNo: '0896934536',
+      accountName: 'NGUYEN QUOC NIN',
+      bankDisplayName: 'MB Bank',
+      //amount: ,
+      addInfo: 'DONATE CHO NGO QUANG DUAN',
+
+      // ====== QR ======
+      // Nếu có ảnh QR riêng thì dán URL ảnh vào customQrImage. Nếu để rỗng, hệ thống sẽ tự tạo VietQR.
+      customQrImage: 'https://i.postimg.cc/W3cFKvtC/8398-photoretrica.png',
+      // Tùy chọn template ảnh QR VietQR: compact | compact2 | qr_only | print
+      qrTemplate: 'compact',
+
+      // ====== DANH SÁCH APP ƯU TIÊN HIỂN THỊ ======
+      preferredApps: ['mb', 'vcb', 'tcb', 'bidv', 'acb', 'vpb', 'tpb', 'vba', 'shb', 'vib', 'msb', 'eximbank', 'ocb', 'hdbank', 'sacombank', 'pvcb'],
+
+      // Link quay về sau khi mở app (tùy chọn)
+      returnUrl: window.location.href
+    };
+
+    const FALLBACK_APPS = [
+      { appId: 'mb', appName: 'MB Bank', bankName: 'Ngân hàng TMCP Quân đội', deeplink: 'https://dl.vietqr.io/pay?app=mb', appLogo: 'https://play-lh.googleusercontent.com/rBEfIxFhnCIq9p6eMdw-U1RhD5psINWr0_Rbx3Wvy3HMJpRRsnG6efhug5eyPlJc7u0' },
+      { appId: 'vcb', appName: 'Vietcombank', bankName: 'Ngân hàng TMCP Ngoại Thương Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=vcb', appLogo: 'https://play-lh.googleusercontent.com/hRq2DVKkzBXQkyftxr0e2ytl0fS2hEWx3UTe3V652RfJVYWqVRGgBNhmZgqNzJ8PKHE' },
+      { appId: 'tcb', appName: 'Techcombank Mobile', bankName: 'Ngân hàng TMCP Kỹ thương Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=tcb', appLogo: 'https://play-lh.googleusercontent.com/Ddr3ZQEu6Vef9JV9ITALeyBEXvYwQWZ3kKJXxrdncD9JR0xlsO--J6zo7uGARfuTBmk' },
+      { appId: 'bidv', appName: 'BIDV SmartBanking', bankName: 'Ngân hàng TMCP Đầu tư và Phát triển Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=bidv', appLogo: 'https://play-lh.googleusercontent.com/SD4lUzWCqLq6nqURm8abnazm8sC0h_hkikryHyODrVpI0g3xMjeuaVs379jUCKrd0vk' },
+      { appId: 'acb', appName: 'ACB One', bankName: 'Ngân hàng TMCP Á Châu', deeplink: 'https://dl.vietqr.io/pay?app=acb', appLogo: 'https://play-lh.googleusercontent.com/knIdLBzE-ngS8Fhim_0FxH56vWhXaQmuLcpMdAcoFY_790hd3t4_XQAlyEWUnYJRyWFP' },
+      { appId: 'vpb', appName: 'VPBank NEO', bankName: 'Ngân hàng TMCP Việt Nam Thịnh Vượng', deeplink: 'https://dl.vietqr.io/pay?app=vpb', appLogo: 'https://play-lh.googleusercontent.com/u9fUwltudW3eSwh0RddQsiAzTpXWRtD8TS0TCC3s--NgUej28iWoCikXCrFLd89YgxHX' },
+      { appId: 'tpb', appName: 'TPBank Mobile', bankName: 'Ngân hàng TMCP Tiên Phong', deeplink: 'https://dl.vietqr.io/pay?app=tpb', appLogo: 'https://play-lh.googleusercontent.com/DiXudMm5iNSTqI1RlC8L5lYZq7DhyQUIafQJJW1iwA4EYgLUaJIjbYx6jtdHKVy5ry8' },
+      { appId: 'vba', appName: 'Agribank E-Mobile Banking', bankName: 'Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=vba', appLogo: 'https://play-lh.googleusercontent.com/rNSXUqGnK-ljK6qUdUmy7h_sDrMOzZ1nPwAUAwshsmPaQuwNGn0Xwj-psgFrBSJOHg' },
+      { appId: 'shb', appName: 'SHB Mobile', bankName: 'Ngân hàng TMCP Sài Gòn - Hà Nội', deeplink: 'https://dl.vietqr.io/pay?app=shb', appLogo: 'https://play-lh.googleusercontent.com/9fRCOHmVSkyXzYJIDRphAeGRh3TBp9bXhGCMSLuVcYOJsJ8S3xROFLyeFDCsCbELUg' },
+      { appId: 'vib', appName: 'VIB Mobile', bankName: 'Ngân hàng Quốc tế Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=vib', appLogo: 'https://play-lh.googleusercontent.com/L9pCJYCM_hLqL1qr7H-v_i0nMeH7DLuVrLa5eE2aeRhzCeYk-IyKZa_3s5TJo3VdZ7Q' },
+      { appId: 'msb', appName: 'MSB Mobile', bankName: 'Ngân hàng Hàng Hải Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=msb', appLogo: 'https://play-lh.googleusercontent.com/m1_lSZ8cT9h-GvnEXhVE7E7n-xYVBsJZHV-NXjwvD5VJl6T5dJAqLPGhRpQZCjN6EA' },
+      { appId: 'eximbank', appName: 'Eximbank', bankName: 'Ngân hàng Xuất Nhập Khẩu Việt Nam', deeplink: 'https://dl.vietqr.io/pay?app=eximbank', appLogo: 'https://play-lh.googleusercontent.com/3gHLmQ_5mOsRvFdyHVkTnGYzW4M2aelwHpuK8T7z8S6mfOjRYLLlyX7oV8vhBxM_Vg' },
+      { appId: 'ocb', appName: 'OCB Mobile', bankName: 'Ngân hàng TMCP Phương Đông', deeplink: 'https://dl.vietqr.io/pay?app=ocb', appLogo: 'https://play-lh.googleusercontent.com/xG7xX9uJQzNV0BK5BJ9QjCQ2AqGxQKL-mLVUKTKMUj5Z7PqNPJkV7FZVXhFdRKJeXA' },
+      { appId: 'hdbank', appName: 'HDBank', bankName: 'Ngân hàng Phát triển Nhà Đà Nẵng', deeplink: 'https://dl.vietqr.io/pay?app=hdbank', appLogo: 'https://play-lh.googleusercontent.com/2Z5H6lXqnbKuBseFBOFUpJQME7Gm2sI8qBXdNqU-45h7_xoVYdxZJ5Tz1KzrNhVfRZE' },
+      { appId: 'sacombank', appName: 'Sacombank Plus', bankName: 'Ngân hàng TMCP Sài Gòn', deeplink: 'https://dl.vietqr.io/pay?app=sacombank', appLogo: 'https://play-lh.googleusercontent.com/bFNCPaBT0oXEPq1M7_SILVgXFq8h-7wvXnwPVIXd1K34TbFvZdH4R8mE4Fq0YvlkDnk' },
+      { appId: 'pvcb', appName: 'PVcomBank', bankName: 'Ngân hàng TMCP Dầu khí Toàn Cầu', deeplink: 'https://dl.vietqr.io/pay?app=pvcb', appLogo: 'https://play-lh.googleusercontent.com/hO44RZv0WBjYfOqYCu5k8KL6KmwBOZPsoWj0CbRFYK8X0D1wJHXRHkW6PVCvwZXQCA' }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+
+    function formatCurrencyVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(amount || 0);
+    }
+
+    function isIOS() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    function buildQrImageUrl() {
+      if (CONFIG.customQrImage) return CONFIG.customQrImage;
+      return `https://img.vietqr.io/image/${encodeURIComponent(CONFIG.bankId)}-${encodeURIComponent(CONFIG.accountNo)}-${encodeURIComponent(CONFIG.qrTemplate)}.png`;
+    }
+
+    function buildPaymentUrl(appId) {
+      const params = new URLSearchParams({
+        app: appId,
+        ba: `${CONFIG.accountNo}@${CONFIG.bankId}`,
+        am: String(CONFIG.amount || 0),
+        tn: CONFIG.addInfo || '',
+        bn: CONFIG.accountName || ''
+      });
+
+      if (CONFIG.returnUrl) {
+        params.set('url', CONFIG.returnUrl);
+      }
+
+      return `https://dl.vietqr.io/pay?${params.toString()}`;
+    }
+
+    function renderInfo() {
+      $('donateTitle').textContent = CONFIG.title;
+      $('donateDescription').textContent = CONFIG.description;
+      $('qrCaption').textContent = CONFIG.qrCaption;
+      $('bankNameText').textContent = CONFIG.bankDisplayName;
+      $('accountNoText').textContent = CONFIG.accountNo;
+      $('accountNameText').textContent = CONFIG.accountName;
+      $('qrImage').src = buildQrImageUrl();
+      $('openPreferredApp').href = buildPaymentUrl(CONFIG.bankId);
+    }
+
+    function sortApps(apps) {
+      const order = new Map(CONFIG.preferredApps.map((id, index) => [id, index]));
+      return [...apps].sort((a, b) => {
+        const aIndex = order.has(a.appId) ? order.get(a.appId) : 999 + (a.monthlyInstall || 0) * -1;
+        const bIndex = order.has(b.appId) ? order.get(b.appId) : 999 + (b.monthlyInstall || 0) * -1;
+        if (aIndex !== bIndex) return aIndex - bIndex;
+        return (b.monthlyInstall || 0) - (a.monthlyInstall || 0);
+      });
+    }
+
+    function renderApps(apps) {
+      const grid = $('bankGrid');
+      grid.innerHTML = '';
+
+      sortApps(apps)
+        .filter(app => CONFIG.preferredApps.includes(app.appId) || (app.monthlyInstall || 0) >= 150000)
+        .slice(0, 12)
+        .forEach(app => {
+          const link = document.createElement('a');
+          link.className = 'bank-btn';
+          link.href = buildPaymentUrl(app.appId);
+          link.rel = 'noopener noreferrer';
+
+          const sub = app.autofill ? 'Hỗ trợ tốt hơn' : 'Mở app nhanh';
+
+          link.innerHTML = `
+            <img src="${app.appLogo}" alt="${app.appName}" loading="lazy" />
+            <div>
+              <div class="name">${app.appName}</div>
+              <div class="sub">${sub}</div>
+            </div>
+          `;
+
+          grid.appendChild(link);
+        });
+    }
+
+    async function loadApps() {
+      const endpoint = isIOS()
+        ? 'https://api.vietqr.io/v2/ios-app-deeplinks'
+        : 'https://api.vietqr.io/v2/android-app-deeplinks';
+
+      try {
+        const res = await fetch(endpoint, { method: 'GET' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!data?.apps?.length) throw new Error('No apps');
+        renderApps(data.apps);
+      } catch (err) {
+        $('emptyState').hidden = false;
+        renderApps(FALLBACK_APPS);
+        console.error('Không tải được danh sách app từ VietQR API:', err);
+      }
+    }
+
+    // Handle copy buttons for individual items
+    document.querySelectorAll('.meta-copy-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const elementId = btn.dataset.copy;
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const text = element.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.classList.add('copied');
+          clearTimeout(btn.copyResetTimer);
+          btn.copyResetTimer = setTimeout(() => {
+            btn.classList.remove('copied');
+          }, 1500);
+        } catch (err) {
+          alert(text);
+        }
+      });
+    });
+
+    renderInfo();
+    loadApps();
+
+    // Auto-play music on page load or first interaction
+    const audioEl = document.querySelector('audio');
+    const playMusic = () => {
+      audioEl.play().catch(() => {
+        // Silent fail - will retry on next interaction
+      });
+    };
+
+    // Try to play immediately
+    playMusic();
+
+    // Also try on first user interaction
+    document.addEventListener('click', playMusic, { once: true });
+    document.addEventListener('scroll', playMusic, { once: true });
+    document.addEventListener('touchstart', playMusic, { once: true });
+  </script>
+
+  <!-- Background Music -->
+  <audio autoplay loop style="display: none;">
+    <source src="https://files.catbox.moe/6vktxq.mp3" type="audio/mpeg">
+  </audio>
+</body>
+</html>
